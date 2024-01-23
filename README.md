@@ -6,6 +6,6 @@
 ### Dev Env.
 - jdk 17
 - Spring Boot 3.2.2
-- Spring Batch 3.2.2
+- Spring Batch Core 5.1.0
 - Gradle 8.3
 
