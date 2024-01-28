@@ -1,12 +1,12 @@
 package com.avatar.search.batch.config;
 
-import com.avatar.search.batch.application.ItemService;
+import com.avatar.search.batch.application.ProductService;
 import com.avatar.search.batch.client.DataClient;
 import com.avatar.search.batch.dto.BatchItemDTO;
 import com.avatar.search.batch.dto.NaverApiItemResponse;
 import com.avatar.search.batch.dto.NaverApiRequest;
 import com.avatar.search.batch.dto.NaverApiResponse;
-import com.avatar.search.hotel.dto.HotelDTO;
+import com.avatar.search.batch.dto.HotelDTO;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +25,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -35,7 +33,7 @@ import java.util.Map;
 public class BatchConfig {
 
     private final DataClient client;
-    private final ItemService itemService;
+    private final ProductService itemService;
     private final EntityManagerFactory entityManagerFactory;
 
 
@@ -58,7 +56,6 @@ public class BatchConfig {
                 .processor(item -> process((HotelDTO) item))
                 .writer(chunk -> {
                     log.info("chunk : " + chunk.getItems().size());
-
                     chunk.getItems()
                             .forEach(items -> {
                                 itemService.storeItem((BatchItemDTO) items);
@@ -74,7 +71,7 @@ public class BatchConfig {
         return new JpaCursorItemReaderBuilder<HotelDTO>()
                 .name("jpaCursorItemReader")
                 .entityManagerFactory(entityManagerFactory)
-                .queryString("SELECT new com.avatar.search.hotel.dto.HotelDTO(h.id, h.name) FROM Hotel h")
+                .queryString("SELECT new com.avatar.search.batch.dto.HotelDTO(h.id, h.name) FROM Hotel h")
                 .build();
     }
 

@@ -11,20 +11,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-//@Table(name = "items", uniqueConstraints = {
-//        @UniqueConstraint(
-//                name = "PRODUCT_UNIQUE",
-//                columnNames = {"product_id, product_type"}
-//        )
-//})
-public class Item extends BaseEntity {
+public class Product extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "product_id")
+    @Column(unique = true)
     private String productId;
-    @Column(name = "product_type")
     private String productType;
     private String title;
     private String link;
@@ -32,5 +25,8 @@ public class Item extends BaseEntity {
     private Long lowPrice;
     private Long highPrice;
     private String mallName;
+
+    @Column(nullable = false)
+    private Long hotelId;
 
 }

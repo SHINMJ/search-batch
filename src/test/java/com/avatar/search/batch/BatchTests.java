@@ -1,7 +1,8 @@
 package com.avatar.search.batch;
 
 import com.avatar.search.hotel.domain.*;
-import com.avatar.search.hotel.dto.HotelDTO;
+import com.avatar.search.batch.dto.HotelDTO;
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.*;
@@ -12,6 +13,8 @@ import org.springframework.batch.test.JobRepositoryTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -29,13 +32,17 @@ public class BatchTests {
     private JpaCursorItemReader<HotelDTO> itemReader;
 
     @Autowired
+    private EntityManager em;
+
+    @Autowired
     private HotelRepository hotelRepository;
 
     @AfterEach
     void tearDown() {
         jobRepositoryTestUtils.removeJobExecutions();
+        hotelRepository.deleteAllInBatch();
+        hotelRepository.flush();
     }
-
 
     @Test
     void itemReader_호텔한건씩조회_success() throws Exception {
@@ -47,7 +54,7 @@ public class BatchTests {
                             .address("address_"+i)
                             .area(Area.builder()
                                     .name("area_name")
-                                    .code("area_code_"+i)
+                                    .code(UUID.randomUUID().toString())
                                     .build())
                             .classification(Classify.FAMILY)
                             .rooms(i+1)
@@ -77,7 +84,7 @@ public class BatchTests {
                             .address("address_"+i)
                             .area(Area.builder()
                                     .name("area_name")
-                                    .code("area_code_"+i)
+                                    .code(UUID.randomUUID().toString())
                                     .build())
                             .classification(Classify.FAMILY)
                             .rooms(i+1)
