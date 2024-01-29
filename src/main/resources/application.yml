@@ -25,3 +25,4 @@ naver-api:
 
 batch:
   chunk: 1000
+  schedule-cron: 1 0 0/12 * * ?
