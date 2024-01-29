@@ -1,1 +1,28 @@
+spring:
+  batch:
+    job:
+      enabled: true
+    jdbc:
+      initialize-schema: always
+  datasource:
+    url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    jpa:
+      hibernate:
+        database-platform: org.hibernate.dialect.MariaDB103Dialect
+      properties:
+        hibernate:
+          format_sql: true
+      show-sql: true
+    h2:
+      console:
+        enabled: true
 
+naver-api:
+  base-url: ${NAVER_API_BASE_URL}
+  client-id: ${NAVER_API_CLIENT_ID}
+  client-secret: ${NAVER_API_CLIENT_SECRET}
+
+batch:
+  chunk: 1000
+  schedule-cron: 1 0 0/12 * * ?
